@@ -1,0 +1,53 @@
+version: "3.2"
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./uploads:/app/uploads
+      # - ./frontend/admin:/app/frontend/admin
+    depends_on:
+      - node
+    networks:
+      - webnet
+
+  node:
+    build: .
+      # context: .
+      # dockerfile: ./docker/node/Dockerfile
+    # volumes:
+    # # https://stackoverflow.com/a/32785014/232619
+    # - .:/app
+    # - /node_modules:/app/node_modules
+    # command: /usr/local/wait-for-it.sh mongo:27017 -- npm start
+    env_file:
+      - .env
+    ports:
+      - 3001:3001
+    networks:
+      - webnet
+    depends_on:
+      - mongodb
+    volumes:
+      - ./uploads:/app/uploads
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    networks:
+      - webnet
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MONGO_INITDB_DATABASE: "${DB_NAME}"
+    # volumes:
+    #   - ./data:/data/db
+
+networks:
+  webnet:
