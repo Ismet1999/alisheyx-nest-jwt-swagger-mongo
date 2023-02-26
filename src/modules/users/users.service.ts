@@ -29,6 +29,9 @@ export class UsersService {
   updateUserById(id: string, body: CreateUserDto) {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });
   }
+  updatePhotoUserById(id: string, body: { photo: string }) {
+    return this.usersModel.findByIdAndUpdate(id, body, { new: true });
+  }
 
   deleteUserById(id: string) {
     return this.usersModel.findByIdAndDelete(id);

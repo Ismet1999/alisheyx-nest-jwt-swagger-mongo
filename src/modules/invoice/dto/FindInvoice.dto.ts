@@ -32,12 +32,21 @@ export class FindInvoiceDto {
 
   @ApiProperty({
     example: '63f7d9078f6d39f09bdb90fa',
-    description: 'Invoice category',
+    description: 'Invoice status',
     required: false,
   })
   @IsOptional()
-  @IsString({ message: 'category must be a valid string' })
-  category: string;
+  @IsString({ message: 'status must be a valid string' })
+  status: string;
+
+  @ApiProperty({
+    example: 'true',
+    description: 'Invoice all',
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ message: 'status must be a valid string true or false' })
+  all_user: 'true' | 'false';
 
   // @ApiProperty({
   //   example: false,
