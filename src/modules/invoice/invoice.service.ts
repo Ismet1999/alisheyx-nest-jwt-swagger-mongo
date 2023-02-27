@@ -42,7 +42,7 @@ export class InvoiceService {
       limit: _limit || SETTINGS.PAGINATION.DEFAULT_LIMIT,
       sort: { createdAt: -1 },
     };
-    const count = await this.invoiceModel.countDocuments(rest, options);
+    const count = await this.invoiceModel.countDocuments(rest);
     const data = await this.invoiceModel
       .find(rest, '-user', options)
       .populate('status', '-created_at -updated_at -__v');
