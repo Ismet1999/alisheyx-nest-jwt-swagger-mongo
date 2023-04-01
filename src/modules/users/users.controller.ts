@@ -105,14 +105,14 @@ export class UsersController {
     }
   }
 
-  @ApiOperation({ summary: 'Update a user' })
-  @ApiResponse({ status: 200, type: Users, description: 'The user updated' })
+  @ApiOperation({ summary: 'Update a user photo' })
+  @ApiResponse({ status: 200, type: Users, description: 'The user photo updated' })
   @ApiConsumes('multipart/form-data')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Patch('/:id/photo')
+  @Patch('/photo')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('photo', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -122,7 +122,7 @@ export class UsersController {
     }),
   )
   updateProfuleUser(
-    @Param('id') id: string,
+    @Request() req,
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
@@ -135,6 +135,7 @@ export class UsersController {
     file: Express.Multer.File,
   ) {
     try {
+      const id = req.user;
       const photo = file.path;
       const res = this.usersService.updatePhotoUserById(id, { photo });
       if (!res) throw new NotFoundException();
