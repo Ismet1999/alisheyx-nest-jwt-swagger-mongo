@@ -16,6 +16,7 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
+  Request,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -31,6 +32,9 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 import { UpdateUserImageDTO } from './dto/UpdateUserImage.dto';
 import { Users } from './users.schema';
 import { UsersService } from './users.service';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
+import { UpdateUserPasswordDto } from './dto/UpdateUserPassword.dto';
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -76,9 +80,24 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Put('/:id')
-  updateUser(@Param('id') id: string, @Body() createUserDto: CreateUserDto) {
+  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      const res = this.usersService.updateUserById(id, createUserDto);
+      const res = this.usersService.updateUserById(id, updateUserDto);
+      if (!res) throw new NotFoundException();
+      return res;
+    } catch (error) {
+      throw new BadRequestException('User not updated: ' + error.message);
+    }
+  }
+
+  @ApiOperation({ summary: 'Update a user password' })
+  @ApiResponse({ status: 200, type: Users, description: 'The user password updated' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Patch('/password')
+  updateUserPassword(@Request() req,  @Body() updateUserDto: UpdateUserPasswordDto) {
+    try {
+      const res = this.usersService.updateUserPasswordById(req.user, updateUserDto);
       if (!res) throw new NotFoundException();
       return res;
     } catch (error) {
