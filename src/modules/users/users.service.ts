@@ -20,7 +20,7 @@ export class UsersService {
     const newUser = new this.usersModel();
     newUser.username = user.username;
     newUser.first_name = user.first_name;
-    newUser.last_name = user.last_name; 
+    newUser.last_name = user.last_name;
     newUser.password = await this.hashService.hashPassword(user.password);
     newUser.phone_number = user.phone_number;
     newUser.email = user.email;
@@ -34,7 +34,10 @@ export class UsersService {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });
   }
   updateUserPasswordById(id: string, body: UpdateUserPasswordDto) {
-    return this.usersModel.findByIdAndUpdate(id, body, { new: true });
+    const item = {
+      password: this.hashService.hashPassword(body.password),
+    };
+    return this.usersModel.findByIdAndUpdate(id, item, { new: true });
   }
   updatePhotoUserById(id: string, body: { photo: string }) {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });
