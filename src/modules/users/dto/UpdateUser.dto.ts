@@ -7,7 +7,6 @@ import {
   IsString,
   IsStrongPassword,
 } from 'class-validator';
-import { Match } from 'src/decorators/match.decorator';
 
 export class UpdateUserDto {
   // @IsNotEmpty({ message: 'Question is required' })
@@ -15,8 +14,8 @@ export class UpdateUserDto {
   // question: string;
   @ApiProperty({ example: 'username', description: 'User name' })
   @IsNotEmpty({ message: 'username is required' })
+  @IsOptional()
   username: string;
-
 
   @ApiProperty({ example: '+998912345678', description: 'User phone number' })
   @IsOptional()

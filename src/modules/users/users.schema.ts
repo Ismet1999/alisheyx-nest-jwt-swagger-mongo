@@ -38,9 +38,13 @@ export class Users {
   @ApiProperty({ example: 'example@mail.com', description: 'User email' })
   email: string;
 
-  @Prop({ type: String })
-  @ApiProperty({ example: 'user photo', description: 'User photo' })
-  photo: string;
+  @Prop({ type: String, default: null })
+  @ApiProperty({
+    example: 'user photo',
+    description: 'User photo',
+    default: null,
+  })
+  photo: string | null;
 
   // created_at: Date;
   @Prop({ default: Date.now })
