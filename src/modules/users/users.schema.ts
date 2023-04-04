@@ -21,14 +21,14 @@ export class Users {
   password: string;
 
   // first_name
-  @Prop({ type: String })
+  @Prop({ type: String, default: null })
   @ApiProperty({ example: 'John', description: 'User first name' })
-  first_name: string;
+  first_name: string | null;
 
   // last_name
-  @Prop({ type: String })
+  @Prop({ type: String, default: null })
   @ApiProperty({ example: 'Doe', description: 'User last name' })
-  last_name: string;
+  last_name: string | null;
 
   @Prop({ type: String })
   @ApiProperty({ example: '+998912345678', description: 'User phone number' })
