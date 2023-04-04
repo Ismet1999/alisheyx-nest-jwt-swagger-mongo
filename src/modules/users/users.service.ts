@@ -14,7 +14,7 @@ export class UsersService {
     private hashService: HashService,
   ) {}
   getAllUsers(query: any) {
-    return this.usersModel.find(query);
+    return this.usersModel.find(query, '-password');
   }
   async createUser(user: CreateUserDto) {
     const newUser = new this.usersModel();
@@ -27,7 +27,7 @@ export class UsersService {
     return newUser.save();
   }
   getUserById(id: string) {
-    return this.usersModel.findById(id);
+    return this.usersModel.findById(id, '-password');
   }
 
   updateUserById(id: string, body: UpdateUserDto) {
