@@ -33,9 +33,9 @@ export class UsersService {
   updateUserById(id: string, body: UpdateUserDto) {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });
   }
-  updateUserPasswordById(id: string, body: UpdateUserPasswordDto) {
+  async updateUserPasswordById(id: string, body: UpdateUserPasswordDto) {
     const item = {
-      password: this.hashService.hashPassword(body.password),
+      password: await this.hashService.hashPassword(body.password),
     };
     return this.usersModel.findByIdAndUpdate(id, item, { new: true });
   }
