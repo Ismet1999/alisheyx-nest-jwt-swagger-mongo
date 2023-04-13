@@ -35,6 +35,9 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign({
         sub: user._id,
+        first_name : user.first_name,
+        last_name : user.last_name,
+        photo : user.photo,
         email: user.email,
         username: user.username,
         phone_number: user.phone_number,
