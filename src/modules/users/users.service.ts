@@ -14,27 +14,30 @@ export class UsersService {
     private hashService: HashService,
   ) {}
   getAllUsers(query: any) {
-    return this.usersModel.find(query);
+    return this.usersModel.find(query, '-password');
   }
   async createUser(user: CreateUserDto) {
     const newUser = new this.usersModel();
     newUser.username = user.username;
     newUser.first_name = user.first_name;
-    newUser.last_name = user.last_name; 
+    newUser.last_name = user.last_name;
     newUser.password = await this.hashService.hashPassword(user.password);
     newUser.phone_number = user.phone_number;
     newUser.email = user.email;
     return newUser.save();
   }
   getUserById(id: string) {
-    return this.usersModel.findById(id);
+    return this.usersModel.findById(id, '-password');
   }
 
   updateUserById(id: string, body: UpdateUserDto) {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });
   }
-  updateUserPasswordById(id: string, body: UpdateUserPasswordDto) {
-    return this.usersModel.findByIdAndUpdate(id, body, { new: true });
+  async updateUserPasswordById(id: string, body: UpdateUserPasswordDto) {
+    const item = {
+      password: await this.hashService.hashPassword(body.password),
+    };
+    return this.usersModel.findByIdAndUpdate(id, item, { new: true });
   }
   updatePhotoUserById(id: string, body: { photo: string }) {
     return this.usersModel.findByIdAndUpdate(id, body, { new: true });

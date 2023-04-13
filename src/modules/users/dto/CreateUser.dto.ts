@@ -48,13 +48,13 @@ export class CreateUserDto {
 
   // first_name;
   @ApiProperty({ example: 'John', description: 'User first name' })
-  @IsOptional({ message: 'first_name is required' })
+  @IsNotEmpty({ message: 'first_name is required' })
   @IsString({ message: 'first_name must be a valid string' })
   first_name: string;
 
   // last_name;
   @ApiProperty({ example: 'Doe', description: 'User last name' })
-  @IsOptional({ message: 'last_name is required' })
+  @IsNotEmpty({ message: 'last_name is required' })
   @IsString({ message: 'last_name must be a valid string' })
   last_name: string;
 }
